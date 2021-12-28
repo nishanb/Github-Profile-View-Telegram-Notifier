@@ -3,7 +3,7 @@
 Telegram bot which notifies when someone looks at your GitHub profile
 
 ## Demo
-<img src="https://github.com/nishanb/Github-Profile-View-Telegram-Notifier/blob/main/demo.gif?raw=true" alt="drawing" width="200"/>
+<img src="https://github.com/nishanb/Github-Profile-View-Telegram-Notifier/blob/main/demo.gif?raw=true" alt="drawing" width="100%"/>
 
 ## Usage
 
