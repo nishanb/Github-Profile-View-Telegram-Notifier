@@ -20,7 +20,7 @@ docker build -t github-view-notifier:latest .
 To depoly a Profile Watcher instance using docker container you can run the following:
 
 ```
-docker run -d -p 80:5000 -e USER_CHAT_ID=<id> -e BOT_TOKEN=<token> telgram-view-notifier:latest
+docker run -d -p 80:5000 -e USER_CHAT_ID=<id> -e BOT_TOKEN=<token> github-view-notifier:latest
 ```
 
 Now to access the webhook go to browser or postman and write http://localhost:80/github
