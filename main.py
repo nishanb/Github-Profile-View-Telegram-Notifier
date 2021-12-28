@@ -1,0 +1,36 @@
+import telegram
+from flask import Flask, request
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+import os
+
+#BOT CONFIG
+REQUEST_RATE_LIMIT = "20 per 15 minute"
+NOTIFIER_CHAT_ID = int(os.environ.get("USER_CHAT_ID"))
+BOT_TOKEN = os.environ.get("BOT_TOKEN")
+
+#init bot service
+bot = telegram.Bot(token=BOT_TOKEN)
+bot.send_message(NOTIFIER_CHAT_ID, "Started Watcher service as " + bot.get_me()['first_name'])
+
+#init server
+app = Flask(__name__)  
+
+#rate limiter 
+limiter = Limiter(
+    app,
+    key_func=get_remote_address,
+    default_limits=["200 per day", "50 per hour"]
+)
+
+#hook
+@app.route('/github', methods=['GET'])
+@limiter.limit(REQUEST_RATE_LIMIT)
+def gitHubHook():
+    if(request.method == 'GET'):
+        bot.send_message(NOTIFIER_CHAT_ID, "Someone viewed your github profile")
+    return ""
+
+#start server 
+if __name__ == '__main__':
+	app.run(debug = True)

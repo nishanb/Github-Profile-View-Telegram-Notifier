@@ -1,0 +1,5 @@
+python-telegram-bot
+Flask
+Flask-RESTful
+flask-limiter
+gunicorn
