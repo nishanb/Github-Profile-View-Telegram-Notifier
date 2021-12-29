@@ -13,6 +13,7 @@ import logging
 REQUEST_RATE_LIMIT = "20 per 15 minute"
 NOTIFIER_CHAT_ID = int(os.environ.get("USER_CHAT_ID"))
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
+SITE_URL = os.environ.get("SITE_URL")
 
 #init bot service
 bot = telegram.Bot(token=BOT_TOKEN)
@@ -25,7 +26,7 @@ app = Flask(__name__)
 limiter = Limiter(
     app,
     key_func=get_remote_address,
-    default_limits=["200 per day", "50 per hour"]
+    default_limits=["500 per day", "50 per hour"]
 )
 
 #hook
@@ -39,7 +40,7 @@ def gitHubHook():
 #set cron job to keep dyno alive
 def KeepAlivePing(*args):
     try:
-        requests.get('https://github-profile-view.herokuapp.com')
+        requests.get(SITE_URL)
         logging.info("KeppAlive ping ---" + bot.get_me()['first_name'])
     except:
         bot.send_message(NOTIFIER_CHAT_ID,bot.get_me()['first_name'] + "Service is down")
@@ -48,7 +49,7 @@ if __name__ == '__main__':
     
     #schedule a cron job
     scheduler = APScheduler()
-    scheduler.add_job(id = 'Keep Alive Ping', func = KeepAlivePing, trigger = 'interval', seconds = 10)
+    scheduler.add_job(id = 'Keep Alive Ping', func = KeepAlivePing, trigger = 'interval', seconds = 20*60)
     scheduler.start()
     
     #start server 
