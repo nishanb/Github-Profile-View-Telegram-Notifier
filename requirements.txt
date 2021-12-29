@@ -6,3 +6,4 @@ gunicorn
 Flask-APScheduler
 tzlocal==2.1
 requests
+APScheduler==3.0.0
