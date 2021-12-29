@@ -50,7 +50,7 @@ if __name__ == '__main__':
     
     #schedule a cron job
     scheduler = APScheduler()
-    scheduler.add_job(id = 'Keep Alive Ping', func = KeepAlivePing, trigger = 'interval', seconds = 60)
+    scheduler.add_job(id = 'Keep Alive Ping', func = KeepAlivePing, trigger = 'interval', seconds = 10)
     scheduler.start()
     
     #start server 
