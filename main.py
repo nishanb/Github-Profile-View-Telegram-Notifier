@@ -2,7 +2,12 @@ import telegram
 from flask import Flask, request
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from flask_apscheduler import APScheduler
 import os
+import time
+import atexit
+import requests
+import logging
 
 #BOT CONFIG
 REQUEST_RATE_LIMIT = "20 per 15 minute"
@@ -11,7 +16,7 @@ BOT_TOKEN = os.environ.get("BOT_TOKEN")
 
 #init bot service
 bot = telegram.Bot(token=BOT_TOKEN)
-bot.send_message(NOTIFIER_CHAT_ID, "Started Watcher service as " + bot.get_me()['first_name'])
+logging.info(bot.get_me()['first_name'] + "is Started")
 
 #init server
 app = Flask(__name__)  
@@ -31,6 +36,20 @@ def gitHubHook():
         bot.send_message(NOTIFIER_CHAT_ID, "Someone viewed your github profile")
     return ""
 
-#start server 
+#set cron job to keep dyno alive
+def KeepAlivePing(*args):
+    try:
+        requests.get('https://github-profile-view.herokuapp.com')
+        logging.info("KeppAlive ping ---" + bot.get_me()['first_name'])
+    except:
+        bot.send_message(NOTIFIER_CHAT_ID,bot.get_me()['first_name'] + "Service is down")
+
 if __name__ == '__main__':
-	app.run(debug = True)
+    
+    #schedule a cron job
+    scheduler = APScheduler()
+    scheduler.add_job(id = 'Keep Alive Ping', func = KeepAlivePing, trigger = 'interval', seconds = 10)
+    scheduler.start()
+    
+    #start server 
+    app.run(debug = False)
