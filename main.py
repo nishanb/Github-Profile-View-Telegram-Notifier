@@ -2,10 +2,7 @@ import telegram
 from flask import Flask, request
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-from flask_apscheduler import APScheduler
 import os
-import time
-import atexit
 import logging
 
 #BOT CONFIG
