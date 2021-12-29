@@ -42,6 +42,7 @@ def KeepAlivePing(*args):
     try:
         requests.get(SITE_URL)
         logging.info("KeppAlive ping ---" + bot.get_me()['first_name'])
+        bot.send_message(NOTIFIER_CHAT_ID,bot.get_me()['first_name'] + "Service is down")
     except:
         bot.send_message(NOTIFIER_CHAT_ID,bot.get_me()['first_name'] + "Service is down")
 
@@ -49,7 +50,7 @@ if __name__ == '__main__':
     
     #schedule a cron job
     scheduler = APScheduler()
-    scheduler.add_job(id = 'Keep Alive Ping', func = KeepAlivePing, trigger = 'interval', seconds = 20*60)
+    scheduler.add_job(id = 'Keep Alive Ping', func = KeepAlivePing, trigger = 'interval', seconds = 60)
     scheduler.start()
     
     #start server 
