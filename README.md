@@ -23,10 +23,9 @@ To depoly a Profile Watcher instance using docker container you can run the foll
 docker run -d -p 80:5000 -e USER_CHAT_ID=<id> -e BOT_TOKEN=<token> github-view-notifier:latest
 ```
 
-Now to access the webhook go to browser or postman and write http://localhost:80/github
+Now to access the webhook go to browser or postman and paste url http://localhost/github
 
-## Deploy
-- 
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
